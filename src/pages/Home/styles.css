@@ -1,5 +1,21 @@
 .home-container {
     padding: 40px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.home-container h1 {
+    font-size: 48px;
+    line-height: 64px;
+    color: #000000;
+}
+
+.home-container p {
+    font-size: 24px;
+    line-height: 40px;
+    color: #7E7E7E;
+    margin: 0 0 27px 0;
 }
 
 .start-button {

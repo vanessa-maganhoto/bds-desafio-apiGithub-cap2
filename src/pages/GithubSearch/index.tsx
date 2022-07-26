@@ -5,20 +5,23 @@ import { useState } from 'react';
 import axios from 'axios';
 
 type FormData = {
-  cep: string;
+  userGithub: string;
   
 };
 
-type Address = {
-  logradouro: string;
-  localidade: string;
+type Perfil = {
+  html_url: string;
+  name: string;
+  followers: string;
+  location: string;
+  avatar_url: string;
 };
 
 const GithubSearch = () => {
-  const [address, setAddress] = useState<Address>();
+  const [perfil, setPerfil] = useState<Perfil>();
 
   const [formData, setFormData] = useState<FormData>({
-    cep: ''
+    userGithub: ''
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,44 +33,44 @@ const GithubSearch = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    axios.get(`https://viacep.com.br/ws/${formData.cep}/json/`)
+    axios.get(`https://api.github.com/users/${formData.userGithub}`)
     .then((response) => {
-      setAddress(response.data);
+      setPerfil(response.data);
       console.log(response.data)
     })
     .catch((error) =>{
-      setAddress(undefined);
+      setPerfil(undefined);
       console.log(error);
     })
   };
 
   return (
-    <div className="cep-search-container">
-      <h1 className="text-primary">Busca CEP</h1>
+    <div className="github-search-container">
+      
       <div className="container search-container">
+        <h1 className="text-dark">Encontre um perfil Github</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-container">
             <input
               type="text"
-              name="cep"
-              value={formData.cep}
+              name="userGithub"
+              value={formData.userGithub}
               className="search-input"
-              placeholder="CEP (somente números)"
+              placeholder="Usuário Github"
               onChange={handleChange}
             />
 
             <button type="submit" className="btn btn-primary search-button">
-              Buscar
+              Encontrar
             </button>
           </div>
         </form>
-        {address &&
-          <>
-            <ResultCard title="Logradouro" description={address.logradouro} />
-            <ResultCard title="Localidade" description={address.localidade} />
-          </>
-        }
       </div>
+      {perfil &&
+         <>
+          <ResultCard avatar_url={perfil.avatar_url} html_url={perfil.html_url} followers={perfil.followers} location={perfil.location} name={perfil.name} />
+        </> 
+      }
     </div>
   );
 };
